@@ -1,0 +1,4 @@
+/* Small non-Tailwind styles and fallbacks used by the demo */
+.avatar-fallback{width:64px;height:64px;object-fit:cover;border-radius:6px;border:1px solid #e5e7eb}
+pre{background:#f8f8f8;padding:8px;overflow:auto}
+body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif}
