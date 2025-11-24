@@ -290,7 +290,7 @@ function showDashboard(user){
 
   // wire sign out / download buttons
   const signOutBtn = document.getElementById('signOutBtn');
-  if (signOutBtn) signOutBtn.onclick = () => { hideDashboard(); };
+  if (signOutBtn) signOutBtn.onclick = () => { hideDashboard(); sessionStorage.removeItem('currentUser'); };
 
   const downloadBtn = document.getElementById('downloadProfileBtn');
   if (downloadBtn) downloadBtn.onclick = () => {
@@ -305,6 +305,11 @@ function showDashboard(user){
     a.remove(); 
     URL.revokeObjectURL(url);
   };
+  // Store a lightweight currentUser in sessionStorage so other pages can read it
+  try{
+    const cu = { username: user.username||'', fullname: user.fullname||'', email: user.email||'', avatarUrl: user.avatarUrl||user.avatar||'' };
+    sessionStorage.setItem('currentUser', JSON.stringify(cu));
+  }catch(e){ console.warn('sessionStorage set failed', e); }
 }
 
 function hideDashboard(){

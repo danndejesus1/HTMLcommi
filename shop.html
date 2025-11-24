@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shop — Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <header class="bg-white shadow sticky top-0 z-10">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="text-2xl font-bold text-indigo-600">DemoShop</div>
+        <nav class="ml-6 text-sm text-gray-600 hidden md:block">
+          <a class="mr-4 hover:text-gray-900" href="#">Home</a>
+          <a class="mr-4 hover:text-gray-900" href="#">Deals</a>
+          <a class="mr-4 hover:text-gray-900" href="#">Categories</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-4">
+        <div id="signedInAs" class="text-sm text-gray-600">Not signed in</div>
+        <a id="goHome" class="text-sm text-indigo-600 hover:underline" href="index.html">Back</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-8">
+    <h1 class="text-2xl font-semibold mb-6">Featured products</h1>
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <!-- products populated by inline JS -->
+    </div>
+  </main>
+
+  <script>
+    // read current user from sessionStorage
+    let currentUser = null;
+    try{ currentUser = JSON.parse(sessionStorage.getItem('currentUser') || 'null'); }catch(e){ currentUser = null; }
+    const signed = document.getElementById('signedInAs');
+    if(currentUser && currentUser.username){
+      signed.innerHTML = `Signed in as <strong>${escapeHtml(currentUser.fullname || currentUser.username)}</strong> &nbsp; <span class=\"text-xs text-gray-500\">(${escapeHtml(currentUser.email||'' )})</span>`;
+    } else {
+      signed.innerHTML = 'Not signed in — <a href="index.html" class="text-indigo-600">Sign in</a>';
+    }
+
+    // sample products
+    const products = [
+      {id:1,title:'Wireless Headphones',price:'$59.99',img:''},
+      {id:2,title:'Smart Speaker',price:'$39.99',img:''},
+      {id:3,title:'Fitness Watch',price:'$89.99',img:''},
+      {id:4,title:'E-reader',price:'$119.99',img:''},
+      {id:5,title:'Coffee Maker',price:'$29.99',img:''},
+      {id:6,title:'Gaming Mouse',price:'$24.99',img:''}
+    ];
+
+    function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+    const grid = document.getElementById('productGrid');
+    products.forEach(p=>{
+      const card = document.createElement('div');
+      card.className = 'bg-white rounded-lg shadow p-4 flex flex-col';
+      card.innerHTML = `\
+        <div class=\"h-40 bg-gray-100 rounded-md mb-4 flex items-center justify-center text-gray-400\">Image</div>\
+        <div class=\"flex-1\">\
+          <h3 class=\"font-semibold\">${escapeHtml(p.title)}</h3>\
+          <div class=\"text-sm text-gray-500 mt-2\">${escapeHtml(p.price)}</div>\
+        </div>\
+        <div class=\"mt-4\">\
+          <button class=\"w-full bg-indigo-600 text-white py-2 rounded-md\">Add to cart</button>\
+        </div>`;
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
